@@ -19,25 +19,32 @@
                 <div class="task"><i class="fa-solid fa-podcast"></i>Podcast</div>
                 <div class="task"><i class="fa-solid fa-download"></i>Downloads</div>
                 <div class="navplayer">
-
                 </div>
-                <div class="navplayercontrol">
-
+                <div id="spacer"></div>
+                <div class="User">
+                    <i class="fa-solid fa-circle-user fa-3x"></i>
                 </div>
         </article>
     </nav>
-        <article class="mainarea">
+    
+        <article class="controls">
+            <div class="timers">
+                <span id="currentTimeText">0:00</span>
+                <span id="durationText">0:00</span>
+            </div>
+            <div class="progressbar">
+                <input type="range" id="progress" value="0" min="0" max="100">
+            </div>
+            <div class="toogle">
+                <button class="toogleCtrl" id="previousbtn"><i class="fa-solid fa-backward-step fa-2x"></i></button>
+                <button class="toogleCtrl" id="playbtn"><i class="fa-solid fa-play fa-2x"></i></button>
+                <button class="toogleCtrl" id="nextbtn"><i class="fa-solid fa-forward-step fa-2x"></i></button>
+            </div>
+            <audio id="song"></audio>
                       
         </article>
     </section>
+
+    <script src="./website.js"></script>
 </body>
 </html>
-
-<!-- <div class="playlist">Playlist</div> -->
-
-            <!-- <div class="songs">Enna solla pogirai</div>
-            <div class="songs">Azhagooril</div>
-            <div class="songs">Kaatre en vaasal</div>
-            <div class="songs">Kavithayae theriyuma</div>
-            <div class="songs">Ennamo yedho</div>
-            <div class="songs">Aathi</div> -->

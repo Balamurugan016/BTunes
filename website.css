@@ -14,7 +14,7 @@ body{
 }
 
 section{
-    border: solid rebeccapurple;
+    /* border: solid rebeccapurple; */
     height: 100vh;
     display: flex;
     color: aqua;
@@ -27,13 +27,15 @@ section{
     flex: 1;
 }
 
-.firstlayer{
-    border: solid white;.
+/* .firstlayer{
+    border: solid white;
 
-}
+} */
 
 
 nav .firstlayer{
+    border-right: 2px solid white;
+    background-color: #0B000E;
     display: flex;
     width: 220px;
     flex-direction: column;
@@ -41,31 +43,18 @@ nav .firstlayer{
     justify-content: center;
     color: white;
     justify-content: space-between;
+
 }
 
 nav .firstlayer .logo{
     width: 80%;
 }
 
-/* navPlayer */
-.navplayer{
-    border: solid;
-    width: 80%;
-    height: 150px;
-    margin: 10px 10px 10px 10px;
-    margin-top: 20px;
-    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNGatYxK9xYZpj73oDlwxObMVZ6zlUVHwoVvttmUX8Ig&s=10');
-    background-position: center;
-    background-size: cover;
+nav .firstlayer div{
+    /* border: solid red; */
+    padding: 10px;
 }
-/* navplayercontrol */
-.navplayercontrol{
-    border: solid white;
-    height: 80px;
-    width: 80%;
-    margin-bottom: 10px;
 
-}
 
 nav .firstlayer .task{
     display: flex;
@@ -88,20 +77,75 @@ nav .firstlayer .task:hover{
 
 }
 
+/* Spacer */
+#spacer{
+    height: 150px;
+}
+
+.User{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    height: 100px;
+    width: 80%;
+    /* border: solid rebeccapurple; */
+
+}
+.User :hover{
+    color: #C4B5FD;
+}
+
 nav article .line{
-    border-top: solid white;
+    /* border-top: solid white; */
     margin: 10px 10px 30px 10px;
     
 }
 
+/* ! Toogle */
+.controls .toogle{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    height: 100px;
+    /* justify-content: end; */
+    align-items: center;
 
-/* ? Mainarea */
+}
 
-section .mainarea{
-    border: solid yellow;
-    width: 100vw;
-    background-image: url('./btunes_neon_violet_bg_clean\ \(1\).svg');
+.controls .toogle .toogleCtrl{
+    /* border: solid red; */
+    color: white;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+.controls .toogle .toogleCtrl:hover{
+    color: #C4B5FD;
+}
+
+
+/* ? Controls */
+
+section .controls{
+    width: 100%;
+    background-image: url('./btunes_neon_violet_bg_clean.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: end;
+}
+
+
+.progressbar{
+    width: 90%;
+    display: flex;
+}
+
+#progress{
+    width: 100%;
 }
