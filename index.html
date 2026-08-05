@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTunes</title>
+    <!-- <link rel="stylesheet" href="./website.css"> -->
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <section>
+    
+        <nav class="navbar">
+         <article class="firstlayer">
+                <div id="logo" class="logo"><img src="./btunes_logo_centered-removebg-preview.png" alt="Logo" height="100%" width="100%"></div>
+                <div class="task"><i class="fa-solid fa-house"></i>Home</div>
+                <div class="task"><i class="fa-solid fa-magnifying-glass"></i>Search</div>
+                <div class="task"><i class="fa-solid fa-layer-group"></i>Library</div>
+                <div class="task"><i class="fa-solid fa-podcast"></i>Podcast</div>
+                <div class="task"><i class="fa-solid fa-download"></i>Downloads</div>
+                <div class="navplayer">
+                </div>
+                <div id="spacer"></div>
+                <div class="User">
+                    <i class="fa-solid fa-circle-user fa-2x"></i>
+                    <p>Bala</p>
+                </div>
+        </article>
+    </nav>
+
+        <article class="controls">
+            <div class="playercontent">
+            <div class="songdetails"> 
+                <img id="coverImg" src="" alt="CoverImage is missing">
+            <!-- <div class="details"> -->
+                <span class="detailsHeading">Title: </span>
+                <span id="title"></span>
+                <span class="detailsHeading">Artist: </span>
+                <span id="artist"></span>
+            <!-- </div>      -->
+        </div>      
+        <div class="lyrics">
+            <div id="lyricData"></div>
+        </div>
+        </div>
+            <div class="progressbar">
+                <span id="currentTimeText">0:00</span>
+                <input type="range" id="progress" value="0" min="0" max="100">
+                <span id="durationText">0:00</span>
+            </div>
+            <div class="toogle">
+                <button class="toogleCtrl" id="shuffleBtn"><i class="fa-solid fa-shuffle fa-2x"></i></button>
+                <div class="buttons">
+                <button class="toogleCtrl" id="previousbtn"><i class="fa-solid fa-backward-step fa-2x"></i></button>
+                <button class="toogleCtrl" id="playbtn"><i class="fa-solid fa-play fa-2x"></i></button>
+                <button class="toogleCtrl" id="nextbtn"><i class="fa-solid fa-forward-step fa-2x"></i></button>
+                </div>
+                <input id="volumeCtrl" type="range" min="0" max="1" step="0.01" value="1">
+            </div>
+            <audio id="song"></audio>
+                      
+        </article>
+    </section>
+
+    <script src="./index.js"></script>
+</body>
+</html>
