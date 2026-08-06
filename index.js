@@ -29,32 +29,38 @@ const songs = [
     {
         title:'Pala Palakkura',
         artist:'HarrisJayaraj',
-        path:'./songs/song1.mp3',
+        path:'./songs/PalaPalakkura .mp3',
         cover:'./images/Ayan.jpeg'
     },
     {
         title:'Karuppa Kooda Va',
         artist:'SaiAbhyankkar',
-        path:'./songs/song2.mp3',
+        path:'./songs/KaruppaKodaVa.mp3',
         cover:'./images/karuppu.jpg'
     },
     {
         title:'Kalyani',
         artist:'Shreya Ghoshal',
-        path:'./songs/song3.mp3',
+        path:'./songs/Kalyani.mp3',
         cover:'./images/kalyani.jpeg'
     },
     {
         title:'Aaya Sher',
         artist:'Anirudh Ravichander',
-        path:'./songs/song4.mp3',
+        path:'./songs/Ayasher.mp3',
         cover:'./images/aayasher.jpeg'
     },
     {
         title:'Powerhouse',
         artist:'Anirudh Ravichander',
-        path:'./songs/song5.mp3',
+        path:'./songs/Powerhouse.mp3',
         cover:'./images/powerhouse.jpeg'
+    },
+    {
+        title:'VizhiVeekura',
+        artist:'Sai Abhyankkar',
+        path:'./songs/VizhiVeekura.mp3',
+        cover:'./images/vizhiveekura.jpeg'
     },
 
 ];
@@ -186,5 +192,5 @@ shuffleBtn.addEventListener('click', () => {
     currentSong = randomIndex
     loadSong(currentSong)
     song.pause()
-    playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>'
+    playbtn.innerHTML='<i class="fa-solid fa-play fa-2x"></i>'
 })

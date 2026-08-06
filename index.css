@@ -148,7 +148,7 @@ nav article .line{
 
 section .controls{
     width: 100%;
-    background-image: url('./btunes_neon_violet_bg_clean.jpg');
+    background-image: url('./logo&bg/btunes_neon_violet_bg_clean.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -216,6 +216,7 @@ section .controls{
     width: 180px;
     margin: 20px;
     display: flex;
+    border-radius: 20px;
 }
 
 /* Lyrics */
@@ -231,6 +232,7 @@ section .controls{
     display: flex;
     width: 100%;
     flex: 1;
+    /* border: solid red; */
 }
 
 .volumeCtrl{
