@@ -2,27 +2,22 @@ const playbtn = document.getElementById('playbtn');
 const song = document.getElementById('song')
 let isplaying = false;
 
-// ! For play pause button 
+let songTitle = document.getElementById('title')
+let songArtist = document.getElementById('artist')
+let songCover = document.getElementById('coverImg')
 
-playbtn.addEventListener('click', () => {
-    if(isplaying == false){
-        console.log('play');
-        song.play()
-        
-        playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>';
+let nextbtn = document.getElementById('nextbtn')
+let previousbtn = document.getElementById('previousbtn')
 
-        isplaying = true;
+let progress = document.getElementById('progress')
 
-    }else{
-        console.log('pause');
-        song.pause()
-        
-        playbtn.innerHTML='<i class="fa-solid fa-play fa-2x"></i>';
+let currentTimeText = document.getElementById('currentTimeText');
+let durationText = document.getElementById('durationText');
 
-        isplaying = false;
 
-    }
-})
+let volumeCtrl = document.getElementById('volumeCtrl')
+
+let shuffleBtn = document.getElementById('shuffleBtn')
 
 // ! For adding songs
 const songs = [
@@ -67,23 +62,49 @@ const songs = [
 
 
 
-let currentSong = 0;
-// ! Title and Artist
 
-let songTitle = document.getElementById('title')
-let songArtist = document.getElementById('artist')
-let songCover = document.getElementById('coverImg')
+
+
+
+// ! For play pause button 
+
+
+playbtn.addEventListener('click', () => {
+    if(isplaying == false){
+        console.log('play');
+        song.play()
+        
+        playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>';
+
+        isplaying = true;
+
+    }else{
+        console.log('pause');
+        song.pause()
+        
+        playbtn.innerHTML='<i class="fa-solid fa-play fa-2x"></i>';
+
+        isplaying = false;
+
+    }
+})
+
+
+let currentSong = 0;
+// ! Title and Artist and LoadSong
 
 function loadSong(index){
     song.src = songs[index].path
     songTitle.textContent = songs[index].title
     songArtist.textContent = songs[index].artist
     songCover.src = songs[index].cover
+    progress.value = 0
+    console.log(progress.value);
+    
 }
 loadSong(currentSong)
 
 // ! nextbtn
-let nextbtn = document.getElementById('nextbtn')
 
 nextbtn.addEventListener('click', () => {
     if(currentSong == songs.length -1){
@@ -95,11 +116,11 @@ nextbtn.addEventListener('click', () => {
     loadSong(currentSong)
     
     song.play()
-     laybtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>'
+    playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>'
+    isplaying = true;
 } )
 
 // ! previousbtn
-let previousbtn = document.getElementById('previousbtn')
 
 previousbtn.addEventListener('click', () => {
     console.log('previousbtn button is worked');
@@ -111,16 +132,21 @@ previousbtn.addEventListener('click', () => {
     }
     loadSong(currentSong)
     song.play()
-     playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>'
+    playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>'
+    isplaying = true;
 } )
 
 // ! progress bar
-let progress = document.getElementById('progress')
 
-song.addEventListener('timeupdate', () => {
-    let progressValue = (song.currentTime / song.duration) * 100
-    progress.value = progressValue
-})
+song.addEventListener("timeupdate", () => {
+
+    if (!song.duration || isNaN(song.duration)) return;
+
+    let progressValue = (song.currentTime / song.duration) * 100;
+
+    progress.value = progressValue;
+
+});
 
 progress.addEventListener('input', () => {
     let seekTime = (progress.value / 100  ) * song.duration
@@ -129,9 +155,6 @@ progress.addEventListener('input', () => {
 })
 
 // ? progressbar timers
-
-let currentTimeText = document.getElementById('currentTimeText');
-let durationText = document.getElementById('durationText');
 
 song.addEventListener('timeupdate', () => {
     let minutes = Math.floor(song.currentTime / 60)
@@ -146,6 +169,10 @@ song.addEventListener('timeupdate', () => {
 
     currentTimeText.textContent = time;
 
+})
+
+song.addEventListener('loadedmetadata', () => {
+    
     let durationMinutes = Math.floor(song.duration / 60)
     let durationSeconds = Math.floor(song.duration % 60)
 
@@ -174,23 +201,21 @@ song.addEventListener('ended', () => {
 
 // ! Volume feature
 
-let volumeCtrl = document.getElementById('volumeCtrl')
-
 volumeCtrl.addEventListener('input', () => {
     song.volume = volumeCtrl.value
 })
 
 
 // ! Shuffle feature
-let shuffleBtn = document.getElementById('shuffleBtn')
 
 shuffleBtn.addEventListener('click', () => {
     let randomIndex = Math.floor(Math.random() * songs.length)
-    while(currentSong == randomIndex){
+    while(randomIndex == currentSong){
         randomIndex = Math.floor(Math.random() * songs.length)
     }
-    currentSong = randomIndex
+    song.pause();
+    currentSong = randomIndex;
     loadSong(currentSong)
-    song.pause()
-    playbtn.innerHTML='<i class="fa-solid fa-play fa-2x"></i>'
+
 })
+
