@@ -19,6 +19,8 @@ let volumeCtrl = document.getElementById('volumeCtrl')
 
 let shuffleBtn = document.getElementById('shuffleBtn')
 
+let repeatBtn = document.getElementById('repeatBtn')
+
 // ! For adding songs
 const songs = [
     {
@@ -94,6 +96,8 @@ let currentSong = 0;
 // ! Title and Artist and LoadSong
 
 function loadSong(index){
+console.log("Loading song:", songs[index].title);
+
     song.src = songs[index].path
     songTitle.textContent = songs[index].title
     songArtist.textContent = songs[index].artist
@@ -138,15 +142,15 @@ previousbtn.addEventListener('click', () => {
 
 // ! progress bar
 
-song.addEventListener("timeupdate", () => {
-
-    if (!song.duration || isNaN(song.duration)) return;
-
+song.addEventListener('timeupdate', () => {
+    if(!song.duration || isNaN(song.duration)){
+        return;
+    }
     let progressValue = (song.currentTime / song.duration) * 100;
 
-    progress.value = progressValue;
+    progress.value = progressValue
+})
 
-});
 
 progress.addEventListener('input', () => {
     let seekTime = (progress.value / 100  ) * song.duration
@@ -188,15 +192,15 @@ song.addEventListener('loadedmetadata', () => {
 
 
 // ! Auto-play feature
-song.addEventListener('ended', () => {
-    if(currentSong == songs.length -1){
-        currentSong = 0
-    }else{
-        currentSong++
-    }
-    loadSong(currentSong)
-    song.play()  
-})
+// song.addEventListener('ended', () => {
+//     if(currentSong == songs.length -1){
+//         currentSong = 0
+//     }else{
+//         currentSong++
+//     }
+//     loadSong(currentSong)
+//     song.play()  
+// })
 
 
 // ! Volume feature
@@ -210,12 +214,61 @@ volumeCtrl.addEventListener('input', () => {
 
 shuffleBtn.addEventListener('click', () => {
     let randomIndex = Math.floor(Math.random() * songs.length)
+    let wasPlaying = isplaying
     while(randomIndex == currentSong){
         randomIndex = Math.floor(Math.random() * songs.length)
     }
-    song.pause();
     currentSong = randomIndex;
     loadSong(currentSong)
-
+    if(wasPlaying){
+        song.play();
+    playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>';
+    
+    }else{
+        song.pause()
+        playbtn.innerHTML='<i class="fa-solid fa-play fa-2x"></i>';
+    }
 })
 
+// ! Repeat feature
+
+let repeatMode = 'off'
+
+repeatBtn.addEventListener('click', () => {
+
+    if(repeatMode === 'off'){
+        repeatMode = 'all'
+
+    }else if(repeatMode === 'all'){
+        repeatMode = 'one'
+        
+    }else{
+        repeatMode = 'off'
+    }
+    console.log(repeatMode);
+})
+
+song.addEventListener('ended', () => {
+    if(repeatMode === 'one'){
+        song.currentTime = 0;
+        song.play()
+    }else if (repeatMode === 'all'){
+        if(currentSong == songs.length -1){
+            currentSong = 0;        
+        }else{
+            currentSong++;
+        }
+        loadSong(currentSong);
+        song.play()
+    }else{
+        if(currentSong === songs.length -1){
+            playbtn.innerHTML='<i class="fa-solid fa-play fa-2x"></i>';
+            isplaying = false;
+            return;
+        }else{
+            currentSong++;
+            loadSong(currentSong)
+            song.play()
+        }
+    }
+})
