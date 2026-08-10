@@ -127,7 +127,7 @@ nav article .line{
     color: white;
     background: transparent;
     box-shadow: none;
-    border: none;
+    /* border: none; */
 }
 
 .controls .toogle .toogleCtrl:hover{
