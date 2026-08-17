@@ -70,45 +70,23 @@ const songs = [
 
 // ! API integration
 
+let getSongs = async () => {
+    let response = await fetch('https://api.audius.co/v1/tracks/search?query=electronic')
+    let details = await response.json()
 
-fetch('https://api.audius.co/v1/tracks/search?query=electronic')
-    .then(response => response.json())
-    .then(data => {
-       data.data.forEach(track => {
-       let apiSong= {
-            title: track.title,
-            artist: track.user.name,
-            cover: track.artwork['1000x1000'],
-            id: track.id
-        } 
-    //    fetch(`https://api.audius.co/v1/tracks/${apiSong.id}/stream`)
-    //    .then(response => {
-    //       apiSong.path = response.url
-    //       console.log(apiSong);
-    songs.push(apiSong)
-          
-
-       })
-        
-       });
-
-// })
-
-
-    
-
-// fetch('https://api.audius.co/v1/tracks/Y96Ry/stream')
-//    .then(response => {
-//     apiSong.path = response.url
-//     console.log(apiSong);
-//    })
-
-
-
-
+    details.data.forEach(element => {
+        let apiSong = {
+            title: element.title,
+            artist: element.user.name,
+            cover: element.artwork['1000x1000'],
+            id: element.id
+        }
+        songs.push(apiSong)
+    });
+}
+getSongs()
 
 // ! For play pause button 
-
 
 playbtn.addEventListener('click', () => {
     if(isplaying == false){
@@ -135,15 +113,16 @@ let currentSong = 0;
 
 // ! Title and Artist and LoadSong
 
-function loadSong(index){
+async function loadSong(index){
 console.log("Loading song:", songs[index].title);
+try{
  if(songs[index].id){
         console.log('api song');
     
-    fetch(`https://api.audius.co/v1/tracks/${songs[index].id}/stream`)
-    .then(response => {
+    let response = await fetch(`https://api.audius.co/v1/tracks/${songs[index].id}/stream`)
+    
         song.src = response.url
-    })
+
 }else{
         console.log('local song');
         song.src = songs[index].path
@@ -154,20 +133,25 @@ console.log("Loading song:", songs[index].title);
     songCover.src = songs[index].cover
     progress.value = 0
     console.log(progress.value);
+} catch(error){
+    console.log("Failed to load song: ", error);
+    
+}
     
 }
 loadSong(currentSong)
 
+
 // ! nextbtn
 
-nextbtn.addEventListener('click', () => {
+nextbtn.addEventListener('click', async () => {
     if(currentSong == songs.length -1){
         currentSong = 0;
     }else{
         currentSong++;
     }
 
-    loadSong(currentSong)
+    await loadSong(currentSong)
     
     song.play()
     playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>'
@@ -176,7 +160,7 @@ nextbtn.addEventListener('click', () => {
 
 // ! previousbtn
 
-previousbtn.addEventListener('click', () => {
+previousbtn.addEventListener('click', async () => {
     console.log('previousbtn button is worked');
     
     if(currentSong == 0){
@@ -184,7 +168,7 @@ previousbtn.addEventListener('click', () => {
     }else{
         currentSong--;
     }
-    loadSong(currentSong)
+    await loadSong(currentSong)
     song.play()
     playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>'
     isplaying = true;
