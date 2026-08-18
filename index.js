@@ -25,9 +25,17 @@ let muteBtn = document.getElementById('muteBtn')
 
 let likeBtn = document.getElementById('likeBtn')
 
+let playList = document.getElementById('playlist')
+
 
 // ! For adding songs
 const songs = [
+    {
+        title:'Alaakaa Loova',
+        artist:'SaiAbhyankkar',
+        path:'./songs/Alaakaa Loova.mp3',
+        cover:'./images/alaakaa loova.jpeg'
+    },
     {
         title:'Pala Palakkura',
         artist:'HarrisJayaraj',
@@ -88,26 +96,44 @@ getSongs()
 
 // ! For play pause button 
 
+// playbtn.addEventListener('click', () => {
+//     if(isplaying == false){
+//         console.log('play');
+//         song.play()
+        
+//         playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>';
+
+//         isplaying = true;
+
+//     }else{
+//         console.log('pause');
+//         song.pause()
+        
+//         playbtn.innerHTML='<i class="fa-solid fa-play fa-2x"></i>';
+
+//         isplaying = false;
+
+//     }
+// })
+
+
 playbtn.addEventListener('click', () => {
-    if(isplaying == false){
-        console.log('play');
-        song.play()
-        
-        playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>';
-
-        isplaying = true;
-
+    if(song.paused){
+        song.play();
     }else{
-        console.log('pause');
-        song.pause()
-        
-        playbtn.innerHTML='<i class="fa-solid fa-play fa-2x"></i>';
-
-        isplaying = false;
-
+        song.pause();
     }
 })
 
+// ? to change icon 
+song.addEventListener('play', () => {
+    playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>';
+})
+
+// ? to change icon
+song.addEventListener('pause', () => {
+    playbtn.innerHTML='<i class="fa-solid fa-play fa-2x"></i>';
+})
 
 let currentSong = 0;
 
@@ -115,6 +141,7 @@ let currentSong = 0;
 
 async function loadSong(index){
 console.log("Loading song:", songs[index].title);
+
 try{
  if(songs[index].id){
         console.log('api song');
@@ -128,11 +155,15 @@ try{
         song.src = songs[index].path
         
     }
-    songTitle.textContent = songs[index].title
-    songArtist.textContent = songs[index].artist
-    songCover.src = songs[index].cover
-    progress.value = 0
-    console.log(progress.value);
+    songTitle.textContent = songs[index].title;
+    songArtist.textContent = songs[index].artist;
+    songCover.src = songs[index].cover;
+
+    progress.value = 0;
+
+    currentTimeText.textContent = '0:00';
+    durationText.textContent = '0:00'
+
 } catch(error){
     console.log("Failed to load song: ", error);
     
@@ -145,17 +176,15 @@ loadSong(currentSong)
 // ! nextbtn
 
 nextbtn.addEventListener('click', async () => {
+
     if(currentSong == songs.length -1){
         currentSong = 0;
     }else{
         currentSong++;
     }
 
-    await loadSong(currentSong)
-    
+    await loadSong(currentSong) 
     song.play()
-    playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>'
-    isplaying = true;
 } )
 
 // ! previousbtn
@@ -168,10 +197,10 @@ previousbtn.addEventListener('click', async () => {
     }else{
         currentSong--;
     }
+
     await loadSong(currentSong)
     song.play()
-    playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>'
-    isplaying = true;
+   
 } )
 
 // ! progress bar
@@ -194,36 +223,56 @@ progress.addEventListener('input', () => {
 
 // ? progressbar timers
 
-song.addEventListener('timeupdate', () => {
-    let minutes = Math.floor(song.currentTime / 60)
-    let seconds = Math.floor(song.currentTime % 60)
 
-    let time;
-    if(seconds < 10){
-        time = `${minutes}:0${seconds}`
-    }else{
-        time = `${minutes}:${seconds}`
+function formatTime(seconds){
+    let minutes = Math.floor(seconds / 60)
+    let remainingSeconds = Math.floor(seconds % 60)
+    
+    if(remainingSeconds < 10){
+        remainingSeconds = `0:${remainingSeconds}`
     }
 
-    currentTimeText.textContent = time;
+    return 1`${minutes}:${remainingSeconds}`
+}
 
+// song.addEventListener('timeupdate', () => {
+//     let minutes = Math.floor(song.currentTime / 60)
+//     let seconds = Math.floor(song.currentTime % 60)
+
+//     let time;
+//     if(seconds < 10){
+//         time = `${minutes}:0${seconds}`
+//     }else{
+//         time = `${minutes}:${seconds}`
+//     }
+
+//     currentTimeText.textContent = time;
+
+// })
+
+// song.addEventListener('loadedmetadata', () => {
+    
+//     let durationMinutes = Math.floor(song.duration / 60)
+//     let durationSeconds = Math.floor(song.duration % 60)
+
+//     let durationTime;
+//     if(durationSeconds < 10){
+//         durationTime = `${durationMinutes}:0${durationSeconds}`
+//     }else{
+//         durationTime = `${durationMinutes}:${durationSeconds}`
+//     }
+
+//     durationText.textContent = durationTime
+// })
+
+
+song.addEventListener('timeupdate', () => {
+    currentTimeText.textContent = formatTime(song.currentTime)
 })
 
 song.addEventListener('loadedmetadata', () => {
-    
-    let durationMinutes = Math.floor(song.duration / 60)
-    let durationSeconds = Math.floor(song.duration % 60)
-
-    let durationTime;
-    if(durationSeconds < 10){
-        durationTime = `${durationMinutes}:0${durationSeconds}`
-    }else{
-        durationTime = `${durationMinutes}:${durationSeconds}`
-    }
-
-    durationText.textContent = durationTime
+    durationText.textContent = formatTime(song.duration)
 })
-
 
 // ! Auto-play feature
 // song.addEventListener('ended', () => {
@@ -284,17 +333,20 @@ muteBtn.addEventListener('click', () => {
 
 // ! Shuffle feature
 
-shuffleBtn.addEventListener('click', () => {
+shuffleBtn.addEventListener('click', async () => {
     let randomIndex = Math.floor(Math.random() * songs.length)
     let wasPlaying = isplaying
+    if(songs.length <= 1){
+        return;
+    }
     while(randomIndex == currentSong){
         randomIndex = Math.floor(Math.random() * songs.length)
     }
     currentSong = randomIndex;
-    loadSong(currentSong)
+    await loadSong(currentSong)
     if(wasPlaying){
 
-        song.play();
+        await song.play();
         playbtn.innerHTML='<i class="fa-solid fa-pause fa-2x"></i>';
     
     }else{
@@ -325,7 +377,7 @@ repeatBtn.addEventListener('click', () => {
     console.log(repeatMode);
 })
 
-song.addEventListener('ended', () => {
+song.addEventListener('ended', async () => {
     if(repeatMode === 'one'){
         song.currentTime = 0;
         song.play()
@@ -335,7 +387,7 @@ song.addEventListener('ended', () => {
         }else{
             currentSong++;
         }
-        loadSong(currentSong);
+        await loadSong(currentSong);
         song.play()
     }else{
         if(currentSong === songs.length -1){
@@ -344,7 +396,7 @@ song.addEventListener('ended', () => {
             return;
         }else{
             currentSong++;
-            loadSong(currentSong)
+            await loadSong(currentSong)
             song.play()
         }
     }
@@ -359,3 +411,14 @@ likeBtn.addEventListener('click', () => {
         likeBtn.style.color = 'red'
     }
 })
+
+
+// ! PlayList
+
+let songItem = document.createElement('div');
+
+songItem.classList.add('songItem')
+
+playList.appendChild(songItem)
+
+songItem.textContent=songs[0].title
